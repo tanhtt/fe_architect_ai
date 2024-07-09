@@ -1,6 +1,4 @@
 import Box from '@mui/material/Box'
-import architectAI from '~/assets/imgs/final.png'
-import houseEx from '~/assets/imgs/image 5.png'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -13,8 +11,77 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import AllInboxIcon from '@mui/icons-material/AllInbox'
 import HandshakeIcon from '@mui/icons-material/Handshake'
+import Container from '@mui/material/Container'
+import Paper from '@mui/material/Paper'
+import MyCarousel from '~/components/Carousel'
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
+import ChatIcon from '@mui/icons-material/Chat'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import EmailIcon from '@mui/icons-material/Email'
+import VerifiedIcon from '@mui/icons-material/Verified'
+
+import architectAI from '~/assets/imgs/final.png'
+import houseEx from '~/assets/imgs/image 5.png'
+import carou1 from '~/assets/imgs/image 6.png'
+import carou2 from '~/assets/imgs/image 7.png'
+import carou3 from '~/assets/imgs/image 8.png'
+import avatar1 from '~/assets/imgs/image (35) 1.png'
+import avatar2 from '~/assets/imgs/image (39) 1.png'
+import toto from '~/assets/imgs/toto.jpg'
+
+import rawImg from '~/assets/imgs/raw.png'
+import processImg from '~/assets/imgs/middle.png'
+import doneImg from '~/assets/imgs/done.png'
+import MyTitleH4 from '~/components/MyTitleH4'
 
 function AppContent() {
+  const carouselItems = [
+    {
+      id: 1,
+      avatar: avatar1,
+      name: 'Sarah Nguyen',
+      place: 'San Francisco',
+      star: '5.0',
+      desc: 'Architect AI truly cares about their clients. They listened to my needs and preferences and helped me Create a perfect Architectural. Their professionalism and attention to detail are unmatched.',
+      img: carou1
+    },
+    {
+      id: 1,
+      avatar: avatar2,
+      name: 'Milch Edd',
+      place: 'San Francisco',
+      star: '4.0',
+      desc: 'Architect AI truly cares about their clients. They listened to my needs and preferences and helped me Create a perfect Architectural. Their professionalism and attention to detail are unmatched.',
+      img: carou2
+    },
+    {
+      id: 1,
+      avatar: avatar1,
+      name: 'Anna',
+      place: 'San Francisco',
+      star: '4.5',
+      desc: 'Architect AI truly cares about their clients. They listened to my needs and preferences and helped me Create a perfect Architectural. Their professionalism and attention to detail are unmatched.',
+      img: carou3
+    },
+    {
+      id: 1,
+      avatar: avatar2,
+      name: 'Architect AI',
+      place: 'San Francisco',
+      star: '4.7',
+      desc: 'Architect AI truly cares about their clients. They listened to my needs and preferences and helped me Create a perfect Architectural. Their professionalism and attention to detail are unmatched.',
+      img: carou1
+    },
+    {
+      id: 1,
+      avatar: toto,
+      name: 'Toto',
+      place: 'Japan',
+      star: '5.0',
+      desc: 'Power',
+      img: carou2
+    }
+  ]
   return (
     <>
       {/* Home Section  */}
@@ -280,7 +347,7 @@ function AppContent() {
       </Box>
 
       {/* Why chose us section  */}
-      <Box sx={{ width: '100%', maxWidth: '900px', margin: 'auto' }}>
+      <Box sx={{ width: '100%', maxWidth: '900px', margin: 'auto', marginTop: '10rem' }}>
         <Typography variant="h3" sx={{ textAlign: 'center', mb: 3, fontWeight: 'bold', color: '#2B1B12' }}>
         Why Choose Us
         </Typography>
@@ -333,6 +400,128 @@ function AppContent() {
             </Box>
           </Grid>
         </Grid>
+      </Box>
+
+      {/* Carousel Content */}
+      <Box sx={{ width: '100%', maxWidth: '900px', margin: 'auto', marginTop: '10rem' }}>
+        <Typography variant="h3" sx={{ textAlign: 'center', mb: 3, fontWeight: 'bold', color: '#2B1B12' }}>
+        What People Say <br/> About ArchitectAI
+        </Typography>
+      </Box>
+      <Box sx={{ marginTop: '40px', width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <MyCarousel items={carouselItems} />
+      </Box>
+
+
+      {/* How does it work */}
+      <Box sx={{ bgcolor: '#FBF5F1', marginTop: '8rem', paddingBottom: '8rem' }}>
+        <Typography variant="h3" sx={{ textAlign: 'center', padding: '8rem', fontWeight: 'bold', color: '#2B1B12' }}>
+        How does it work?
+        </Typography>
+        <Grid container spacing={4} alignItems="center" justifyContent="center">
+          <Grid item xs={12} md={3}>
+            <Box style={{ padding: '16px', textAlign: 'center' }}>
+              <img src={rawImg} alt="Upload Sketch" style={{ maxWidth: '100%' }} />
+              <Typography variant="h6">UPLOAD your sketch</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={1} style={{ textAlign: 'center' }}>
+            <ArrowCircleRightIcon fontSize="large" />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Box elevation={3} style={{ padding: '16px', textAlign: 'center' }}>
+              <img src={processImg} alt="AI Processing" style={{ maxWidth: '100%' }} />
+              <Typography variant="h6">Wait for AI to process</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={1} style={{ textAlign: 'center' }}>
+            <ArrowCircleRightIcon fontSize="large" />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Box elevation={3} style={{ padding: '16px', textAlign: 'center' }}>
+              <img src={doneImg} alt="Download Architectural" style={{ maxWidth: '100%' }} />
+              <Typography variant="h6">DOWNLOAD your Architectural</Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* Help Section  */}
+      <Box sx={{ padding: '10rem' }}>
+        <MyTitleH4 title='Do You Have Any Questions?' />
+        <MyTitleH4 title='Get Help From Us' />
+        <Grid spacing={2} sx={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+          <Grid item xs={12} sm={6} md={3} style={{ display: 'flex', marginRight: '3rem' }}>
+            <VerifiedIcon fontSize="small" sx={{ color: '#543E32', padding: '2px' }} />
+            <Typography sx={{ color: '#543E32', fontWeight: 'bold' }}>Chat live with our support team</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3} style={{ display: 'flex' }}>
+            <VerifiedIcon fontSize="small" sx={{ color: '#543E32', padding: '2px' }} />
+            <Typography sx={{ color: '#543E32', fontWeight: 'bold' }}>Browse our FAQ</Typography>
+          </Grid>
+        </Grid>
+        <Box sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <Box sx={{
+            width: '50vw',
+            bgcolor: '#DDC7BB',
+            borderRadius: '8px',
+            padding: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <TextField
+              placeholder='Enter your email address...'
+              type="text"
+              fullWidth
+              sx={{
+                marginRight: '3rem',
+                backgroundColor: '#FBF5F1',
+                borderRadius: '8px',
+                '& input': { color: '#695346', fontWeight: 'bold' },
+                '& label.Mui-focused': { color: '#000' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: 'transparent' },
+                  '&:hover fieldset': { borderColor: 'transparent' },
+                  '&.Mui-focused fieldset': { borderColor: 'transparent' }
+                },
+                '& .MuiInputBase-input': {
+                  borderRadius: '8px',
+                  '&::placeholder': {
+                    color: '#695346',
+                    fontWeight: 'bold',
+                    opacity: 1
+                  }
+                }
+              }}
+              InputProps={{
+                startAdornment:
+                  <InputAdornment position="start">
+                    <EmailIcon sx={{ color: '#695346' }} />
+                  </InputAdornment>
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: '#2B1B12',
+                color: 'white',
+                fontSize: '1.5rem',
+                width: '10rem',
+                boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+                '&:hover': {
+                  backgroundColor: 'gray' // Màu nền khi hover
+                }
+              }}
+            >
+      Submit
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </>
   )
