@@ -356,45 +356,45 @@ function AppContent() {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', minHeight: '150px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <CheckCircleIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Absolute Quality</Typography>
-              <Typography variant="body2" sx={{ color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
               Ensuring quality and accuracy for each design refined by the user
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', minHeight: '150px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <ManageAccountsIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Professional</Typography>
-              <Typography variant="body2" sx={{ color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
               Professional operations team, 24/24 customer support in case of problems
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', minHeight: '150px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <AllInboxIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Attractive price</Typography>
-              <Typography variant="body2" sx={{ color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
               Support discounts for interns and attractive incentive packages for architects
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', minHeight: '150px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <HandshakeIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Reliability</Typography>
-              <Typography variant="body2" sx={{ color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
               Reliable level with more than 500 partners nationwide, 5 years of success in the field of architecture
               </Typography>
             </Box>
