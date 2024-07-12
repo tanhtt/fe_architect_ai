@@ -122,7 +122,7 @@ function AppContent() {
             padding: 3
           }}
         >
-          <Box sx={{ padding: '5rem', maxWidth: '40vw' }}>
+          <Box sx={{ padding: '3vw', maxWidth: '50vw' }}>
             <Typography variant='h2' sx={{ fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Architect AI</Typography>
             <Typography variant='h6' sx={{ fontWeight: 'bold', mt: '2rem', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>is a software that helps you create a unique and modern design with advanced AI technology, helping you minimize design time, choose materials, arrange and measure meticulous details, etc. ..</Typography>
             <Button
@@ -131,7 +131,7 @@ function AppContent() {
                 mt: '2rem',
                 backgroundColor: 'white',
                 color: 'black',
-                fontSize: '1.5rem',
+                fontSize: '1rem',
                 width: '10rem',
                 boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                 '&:hover': {
@@ -148,7 +148,7 @@ function AppContent() {
                 mt: '2rem',
                 backgroundColor: 'black',
                 color: 'white',
-                fontSize: '1.5rem',
+                fontSize: '1rem',
                 width: '10rem',
                 boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                 '&:hover': {
@@ -179,8 +179,8 @@ function AppContent() {
                   placeholder='You are?'
                   type="text"
                   sx={{
-                    marginRight: '3rem',
-                    minWidth: '120px',
+                    marginRight: '3vw',
+                    minWidth: '90px',
                     maxWidth: '180px',
                     backgroundColor: '#FBF5F1',
                     borderRadius: '8px',
@@ -211,8 +211,8 @@ function AppContent() {
                   placeholder='Age'
                   type="text"
                   sx={{
-                    marginRight: '3rem',
-                    minWidth: '120px',
+                    marginRight: '3vw',
+                    minWidth: '90px',
                     maxWidth: '180px',
                     backgroundColor: '#FBF5F1',
                     borderRadius: '8px',
@@ -243,8 +243,8 @@ function AppContent() {
                   placeholder='Price Range'
                   type="text"
                   sx={{
-                    marginRight: '3rem',
-                    minWidth: '120px',
+                    marginRight: '3vw',
+                    minWidth: '90px',
                     maxWidth: '180px',
                     backgroundColor: '#FBF5F1',
                     borderRadius: '8px',
@@ -347,7 +347,7 @@ function AppContent() {
       </Box>
 
       {/* Why chose us section  */}
-      <Box sx={{ width: '100%', maxWidth: '900px', margin: 'auto', marginTop: '10rem' }}>
+      <Box sx={{ width: '100%', maxWidth: '90vw', margin: 'auto', marginTop: '1rem' }}>
         <Typography variant="h3" sx={{ textAlign: 'center', mb: 3, fontWeight: 'bold', color: '#2B1B12' }}>
         Why Choose Us
         </Typography>
@@ -356,45 +356,45 @@ function AppContent() {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '190px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <CheckCircleIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Absolute Quality</Typography>
-              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body1" sx={{lineHeight: '1.5rem', wordBreak: 'break-word', color: '#4F3527', mt: '5px' }}>
               Ensuring quality and accuracy for each design refined by the user
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '190px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <ManageAccountsIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Professional</Typography>
-              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body1" sx={{lineHeight: '1.5rem', wordBreak: 'break-word', color: '#4F3527', mt: '5px' }}>
               Professional operations team, 24/24 customer support in case of problems
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '190px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <AllInboxIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Attractive price</Typography>
-              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body1" sx={{lineHeight: '1.5rem', wordBreak: 'break-word', color: '#4F3527', mt: '5px' }}>
               Support discounts for interns and attractive incentive packages for architects
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '170px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', bgcolor: '#DDC7BB', borderRadius: '10px', padding: '10px', height: '190px' }}>
               <Box sx={{ padding: '8px', bgcolor: '#FBF5F1', borderRadius: '8px' }}>
                 <HandshakeIcon sx={{ fontSize: '2.5rem', padding: 0, lineHeight: 0 }}/>
               </Box>
               <Typography variant="h6" sx={{ color: '#4F3527', mt: '5px' }}>Reliability</Typography>
-              <Typography variant="body2" sx={{lineHeight: '1.5rem', color: '#4F3527', mt: '5px' }}>
+              <Typography variant="body1" sx={{lineHeight: '1.5rem', wordBreak: 'break-word', color: '#4F3527', mt: '5px' }}>
               Reliable level with more than 500 partners nationwide, 5 years of success in the field of architecture
               </Typography>
             </Box>
