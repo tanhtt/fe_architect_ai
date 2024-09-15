@@ -1,0 +1,9 @@
+.custom-link {
+    text-decoration: none; /* Xóa bỏ gạch chân */
+    color: inherit;        /* Giữ nguyên màu của text, không thay đổi */
+  }
+  
+  .custom-link:hover {
+    color: inherit;        /* Thêm hiệu ứng khi hover nếu cần */
+  }
+  

@@ -4,6 +4,8 @@ import { Button } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import architectAI from '~/assets/imgs/architectai.png'
+import { Link } from 'react-router-dom'
+import '../../../styles/AppHeader.css'
 
 function AppHeader() {
   return (
@@ -25,8 +27,8 @@ function AppHeader() {
         </Box>
         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Button size='large' sx={{ color: '#000' }}>Home</Button>
-            <Button size='large' sx={{ color: '#000' }}>Service</Button>
+            <Button size='large' sx={{ color: '#000' }}><Link className='custom-link' to="/">Home</Link></Button>
+            <Button size='large' sx={{ color: '#000' }}><Link className='custom-link' to="/generation">Service</Link></Button>
             <Button size='large' sx={{ color: '#000' }}>About</Button>
             <Button size='large' sx={{ color: '#000' }}>Contact</Button>
           </Box>
@@ -45,7 +47,7 @@ function AppHeader() {
             bgcolor: '#333',
             color: '#fff'
           } }}>Sign up</Button>
-          <Button size='large' variant="text" sx={{ color: '#FFA403' }}>Free Trial</Button>
+          <Button size='large' variant="text" sx={{ color: '#FFA403' }}><Link className='custom-link' to="/pricing">Free Trial</Link></Button>
         </Box>
       </Box>
     </>
