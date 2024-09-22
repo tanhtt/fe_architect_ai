@@ -79,6 +79,7 @@ function Content() {
   const [renderPerformance, setRenderPerformance] = React.useState(50);
   const [customSize, setCustomSize] = React.useState({ width: 512, height: 512 });
   const [imageNumber, setImageNumber] = React.useState(1);
+  const [imageUpload, setImageUpload] = React.useState();
 
   const handleRenderModeChange = (event, newMode) => setRenderMode(newMode);
   const handleInputTypeChange = (event, newType) => setInputType(newType);
@@ -106,6 +107,47 @@ function Content() {
       setCustomSize({ ...customSize, width: 512 });
     } else if (customSize.width > 2048) {
       setCustomSize({ ...customSize, width: 2048 });
+    }
+  };
+
+  const fileInputRef = React.useRef(null);
+
+  const handleBoxClick = () => {
+    fileInputRef.current.click(); // Trigger the click event on the hidden input
+  };
+
+  function handleUploadImage(e) {
+    console.log(e.target.files);
+    setImageUpload(URL.createObjectURL(e.target.files[0]));
+  }
+
+  const handleGenerate = async () => {
+    const payload = {
+      renderMode,
+      inputType,
+      renderStyle,
+      frame,
+      similarityLevel,
+      renderPerformance,
+      customSize,
+      imageNumber,
+      imageUpload,
+    };
+
+    try {
+      const response = await fetch('https://webhook.site/9d6dc48b-ca71-4ae2-9f05-f177292d224b', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        mode: 'no-cors'
+      });
+
+      // const result = await response.json();
+      // console.log('Server response:', result);
+    } catch (error) {
+      console.error('Error sending data to backend:', error);
     }
   };
 
@@ -246,9 +288,23 @@ function Content() {
             {/* Upload Image */}
             <Grid item xs={12} mt={1}>
               <Typography variant="h6" mt={1}>UPLOAD IMAGE</Typography>
-              <Box height={150} display="flex" alignItems="center" justifyContent="center" sx={{ border: '1px solid #BFADA4', borderRadius: '20px', backgroundColor: '#BFADA4' }}>
-                <AddIcon sx={{ color: '#DDC7BB' }} />
+              <Box onClick={handleBoxClick} height={150} display="flex" alignItems="center" justifyContent="center" sx={{ padding: '5px', border: '1px solid #BFADA4', borderRadius: '20px', backgroundColor: '#BFADA4', cursor: 'pointer' }}>
+                {imageUpload ? (
+                  <img
+                    src={imageUpload}
+                    alt="Uploaded Preview"
+                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  />
+                ) : (
+                  <AddIcon sx={{ color: '#DDC7BB' }} />
+                )}
               </Box>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }} // Hide the input
+                onChange={handleUploadImage} // Handle file selection
+              />
             </Grid>
 
             {/* Similarity Level */}
@@ -296,6 +352,7 @@ function Content() {
               </Grid>
               <Grid item xs={6}>
                 <Button variant="contained" fullWidth
+                  onClick={handleGenerate}
                   sx={{
                     fontSize: '18px', // Change text size
                     padding: '10px 20px', // Change button size (padding)
@@ -339,7 +396,7 @@ function Content() {
                 >DOWNLOAD IMAGE</Button>
               </Grid>
               <Grid item xs={2.5}>
-              <Button variant="contained" fullWidth
+                <Button variant="contained" fullWidth
                   sx={{
                     fontSize: '18px', // Change text size
                     padding: '10px 20px', // Change button size (padding)
@@ -355,7 +412,7 @@ function Content() {
                 >DOWNLOAD ALL IMAGE</Button>
               </Grid>
               <Grid item xs={2.5}>
-              <Button variant="contained" fullWidth
+                <Button variant="contained" fullWidth
                   sx={{
                     fontSize: '18px', // Change text size
                     padding: '10px 20px', // Change button size (padding)
@@ -371,7 +428,7 @@ function Content() {
                 >SHARE TO</Button>
               </Grid>
               <Grid item xs={2.5}>
-              <Button variant="contained" fullWidth
+                <Button variant="contained" fullWidth
                   sx={{
                     fontSize: '18px', // Change text size
                     padding: '10px 20px', // Change button size (padding)
@@ -387,7 +444,7 @@ function Content() {
                 >SEND TO INPAINTING</Button>
               </Grid>
               <Grid item xs={2}>
-              <Button variant="contained" fullWidth
+                <Button variant="contained" fullWidth
                   sx={{
                     fontSize: '18px', // Change text size
                     padding: '10px 20px', // Change button size (padding)
@@ -400,7 +457,7 @@ function Content() {
                       backgroundColor: '#F1B18F', // Change hover color
                     },
                   }}
-                ><FolderIcon size="large"/></Button>
+                ><FolderIcon size="large" /></Button>
               </Grid>
             </Grid>
           </Grid>
