@@ -260,7 +260,7 @@ export default function SignUp(props) {
               Already have an account?{' '}
               <span>
                 <Link
-                  href="signin"
+                  to="/signin"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}
                 >

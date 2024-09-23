@@ -263,7 +263,7 @@ export default function SignIn(props) {
               Don&apos;t have an account?{' '}
               <span>
                 <Link
-                  href="/signup"
+                  to="/signup"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}
                 >
