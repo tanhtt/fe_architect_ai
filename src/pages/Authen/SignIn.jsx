@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -15,6 +15,7 @@ import MuiCard from '@mui/material/Card';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import '../../styles/AppHeader.css'
 // import AppTheme from './theme/AppTheme';
 // import ColorModeSelect from './theme/ColorModeSelect';
 
@@ -160,7 +161,7 @@ export default function SignIn(props) {
       <SignInContainer direction="column" justifyContent="space-between">
         {/* <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} /> */}
         <Card variant="outlined">
-          <Link href="/"
+          <Link to="/" className='custom-link'
             sx={{
               textDecoration: "none",
               color: "#4F3527",
@@ -215,6 +216,7 @@ export default function SignIn(props) {
                   component="button"
                   onClick={handleClickOpen}
                   variant="body2"
+                  className='custom-link'
                   sx={{ alignSelf: 'baseline' }}
                 >
                   Forgot your password?
@@ -264,6 +266,7 @@ export default function SignIn(props) {
               <span>
                 <Link
                   to="/signup"
+                  className='custom-link'
                   variant="body2"
                   sx={{ alignSelf: 'center' }}
                 >
