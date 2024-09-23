@@ -43,10 +43,12 @@ function AppHeader() {
             <PersonOutlineIcon sx={{ }}/>
           </Tooltip>
 
+          <Link className='custom-link' to="/signin">
           <Button size='large' sx={{ bgcolor: '#000', color: '#fff', '&:hover': {
             bgcolor: '#333',
             color: '#fff'
           } }}>Sign up</Button>
+          </Link>
           <Button size='large' variant="text" sx={{ color: '#FFA403' }}><Link className='custom-link' to="/pricing">Free Trial</Link></Button>
         </Box>
       </Box>
