@@ -108,6 +108,8 @@ export default function SignUp(props) {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -118,18 +120,50 @@ export default function SignUp(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
 
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email');
+    const password = data.get('password');
+
+    try {
+      // Send POST request to backend API
+      const response = await fetch('https://webhook.site/9d6dc48b-ca71-4ae2-9f05-f177292d224b', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        mode: 'no-cors'
+      });
+
+      // // Handle the response
+      // if (response.ok) {
+      //   const result = await response.json();
+      //   console.log('Success:', result);
+      //   // Handle successful response here (e.g., save token, redirect)
+      // } else {
+      //   console.log('Error:', response.statusText);
+      //   // Handle error response here
+      // }
+    } catch (error) {
+      console.error('Request failed:', error);
+      // Handle network errors or other unexpected issues
+    }
+  };
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
 
     let isValid = true;
 
@@ -151,24 +185,33 @@ export default function SignUp(props) {
       setPasswordErrorMessage('');
     }
 
+    if (!confirmPassword.value || confirmPassword.value !== password.value) {
+      setConfirmPasswordError(true);
+      setConfirmPasswordErrorMessage('Passwords do not match.');
+      isValid = false;
+    } else {
+      setConfirmPasswordError(false);
+      setConfirmPasswordErrorMessage('');
+    }
+
     return isValid;
   };
 
   return (
     // <AppTheme {...props}>
     <ThemeProvider theme={theme}>
-    <CssBaseline enableColorScheme />
+      <CssBaseline enableColorScheme />
       <SignUpContainer direction="column" justifyContent="space-between">
         {/* <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} /> */}
         <Card variant="outlined">
-        <Link to="/"
+          <Link to="/"
             className='custom-link'
             sx={{
               textDecoration: "none",
               color: "#4F3527",
               fontWeight: 'bold',
               width: "fit-content",
-              '&:hover':{
+              '&:hover': {
                 textDecoration: "underline"
               }
             }}
@@ -235,13 +278,12 @@ export default function SignUp(props) {
                 <FormLabel htmlFor="password">Confirm password</FormLabel>
               </Box>
               <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
+                error={confirmPasswordError}
+                helperText={confirmPasswordErrorMessage}
                 name="confirmPassword"
                 placeholder="••••••"
                 type="password"
                 id="confirmPassword"
-                autoComplete="current-password"
                 autoFocus
                 required
                 fullWidth
