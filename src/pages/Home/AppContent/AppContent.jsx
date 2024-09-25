@@ -33,6 +33,7 @@ import rawImg from '~/assets/imgs/raw.png'
 import processImg from '~/assets/imgs/middle.png'
 import doneImg from '~/assets/imgs/done.png'
 import MyTitleH4 from '~/components/MyTitleH4'
+import ScrollToTopButton from '~/components/ScrollToTopBtn'
 
 function AppContent() {
   const carouselItems = [
@@ -84,7 +85,8 @@ function AppContent() {
   ]
   return (
     <>
-      {/* Home Section  */}
+      <Box>
+        {/* Home Section  */}
       <Box sx={{ position: 'relative', width: '100%', height: '100vh' }}>
         {/* Background Image  */}
         <Box
@@ -294,6 +296,7 @@ function AppContent() {
 
       {/* Data Section  */}
       <Box
+          id="about-section"
         sx={{
           width: '100%',
           padding: 5,
@@ -447,7 +450,7 @@ function AppContent() {
       </Box>
 
       {/* Help Section  */}
-      <Box sx={{ padding: '10rem' }}>
+      <Box id="contact-section" sx={{ padding: '10rem' }}>
         <MyTitleH4 title='Do You Have Any Questions?' />
         <MyTitleH4 title='Get Help From Us' />
         <Grid spacing={2} sx={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
@@ -523,6 +526,8 @@ function AppContent() {
           </Box>
         </Box>
       </Box>
+      </Box>
+      <ScrollToTopButton/>
     </>
   )
 }

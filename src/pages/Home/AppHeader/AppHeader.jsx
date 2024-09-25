@@ -6,6 +6,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import architectAI from '~/assets/imgs/architectai.png'
 import { Link } from 'react-router-dom'
 import '../../../styles/AppHeader.css'
+import { Link as LinkInside } from 'react-scroll'
 
 function AppHeader() {
   return (
@@ -29,8 +30,8 @@ function AppHeader() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Button size='large' sx={{ color: '#000' }}><Link className='custom-link' to="/">Home</Link></Button>
             <Button size='large' sx={{ color: '#000' }}><Link className='custom-link' to="/generation">Service</Link></Button>
-            <Button size='large' sx={{ color: '#000' }}>About</Button>
-            <Button size='large' sx={{ color: '#000' }}>Contact</Button>
+            <Button size='large' sx={{ color: '#000' }}><LinkInside to="about-section" smooth={true} duration={500}>About</LinkInside></Button>
+            <Button size='large' sx={{ color: '#000' }}><LinkInside to="contact-section" smooth={true} duration={500}>Contact</LinkInside></Button>
           </Box>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
