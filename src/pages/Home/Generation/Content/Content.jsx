@@ -118,34 +118,45 @@ function Content() {
 
   function handleUploadImage(e) {
     console.log(e.target.files);
-    setImageUpload(URL.createObjectURL(e.target.files[0]));
+    // setImageUpload(URL.createObjectURL(e.target.files[0]));
+    setImageUpload(e.target.files[0]);
   }
 
   const handleGenerate = async () => {
-    const payload = {
-      renderMode,
-      inputType,
-      renderStyle,
-      frame,
-      similarityLevel,
-      renderPerformance,
-      customSize,
-      imageNumber,
-      imageUpload,
-    };
+    // const payload = {
+    //   // renderMode,
+    //   // inputType,
+    //   // renderStyle,
+    //   // frame,
+    //   // similarityLevel,
+    //   // renderPerformance,
+    //   // customSize,
+    //   // imageNumber,
+    //   image: imageUpload,
+    // };
+
+    const data = new FormData();
+    data.append("image", imageUpload);
+    console.log(imageUpload)
+    console.log(renderStyle)
+    console.log(frame)
+    console.log(customSize.width)
+    console.log(customSize.height)
 
     try {
-      const response = await fetch('https://webhook.site/9d6dc48b-ca71-4ae2-9f05-f177292d224b', {
+      const response = await fetch(`http://localhost:8080/render?style=${renderStyle}&material=${frame}&width=${customSize.width}&height=${customSize.height}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          // 'content-type': 'multipart/form-data',
+          // "Accept": "application/json",
+          "type": "formData"
         },
-        body: JSON.stringify(payload),
+        body: data,
         mode: 'no-cors'
       });
 
-      // const result = await response.json();
-      // console.log('Server response:', result);
+      const result = await response.json();
+      console.log('Server response:', result);
     } catch (error) {
       console.error('Error sending data to backend:', error);
     }
