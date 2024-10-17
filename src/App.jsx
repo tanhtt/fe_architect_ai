@@ -6,12 +6,18 @@ import AppFooter from './pages/Home/AppFooter/AppFooter';
 import Pricing from './pages/Home/Pricing/Pricing';
 import SignIn from './pages/Authen/SignIn';
 import SignUp from './pages/Authen/SignUp';
+import AdminUserPage from './pages/Admin/AdminUserPage';
+import AboutUs from './pages/Home/AboutUs/AboutUs';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function AppContent() {
   const location = useLocation();
   
   // Check if the current path is "/signin"
-  const hideHeaderAndFooter = (location.pathname === '/signin') || (location.pathname === '/signup');
+  const hideHeaderAndFooter = (location.pathname === '/signin') || (location.pathname === '/signup') || (location.pathname === '/admin/user');
 
   return (
     <div>
@@ -26,11 +32,15 @@ function AppContent() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/signin" element={<SignIn />} /> {/* SignIn page route */}
           <Route path="/signup" element={<SignUp />} /> {/* SignIn page route */}
+          <Route path='/admin/user' element={<AdminUserPage/>} />
+          <Route path='/aboutus' element={<AboutUs/>} />
         </Routes>
       </main>
 
       {/* Footer */}
       {!hideHeaderAndFooter && <AppFooter />}
+
+      <ToastContainer />
     </div>
   );
 }

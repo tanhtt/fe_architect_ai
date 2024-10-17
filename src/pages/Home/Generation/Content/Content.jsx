@@ -1,9 +1,26 @@
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Container, TextField, InputAdornment, Grid, Button, Typography, Slider, Select, MenuItem, ToggleButton, ToggleButtonGroup, FormControl, InputLabel, Box } from '@mui/material';
+import { Container, TextField, InputAdornment, Grid, Button, Typography, Slider, Select, MenuItem, ToggleButton, ToggleButtonGroup, FormControl, InputLabel, Box, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ImageIcon from '@mui/icons-material/Image';
 import FolderIcon from '@mui/icons-material/Folder';
+import ImageCarousel from '../ImageCarousel';
+
+
+const images = [
+  {
+    src: "https://img.freepik.com/free-photo/ultra-detailed-nebula-abstract-wallpaper-4_1562-749.jpg",
+    alt: "Image 1",
+  },
+  {
+    src: "https://img.freepik.com/premium-photo/abstract-outer-space-endless-nebula-galaxy-background-generative-ai_438099-11374.jpg",
+    alt: "Image 2",
+  },
+  {
+    src: "https://th.bing.com/th/id/OIP.ajQuhSY_Hn1zwkR_r6vl8wHaE7?w=626&h=417&rs=1&pid=ImgDetMain",
+    alt: "Image 3",
+  },
+];
 
 // Custom theme with typography color set globally
 const theme = createTheme({
@@ -74,12 +91,17 @@ function Content() {
   const [renderMode, setRenderMode] = React.useState('Interior');
   const [inputType, setInputType] = React.useState('Photo');
   const [renderStyle, setRenderStyle] = React.useState('Modern');
-  const [frame, setFrame] = React.useState('');
+  const [frame, setFrame] = React.useState('Wooden');
   const [similarityLevel, setSimilarityLevel] = React.useState('Similar');
   const [renderPerformance, setRenderPerformance] = React.useState(50);
   const [customSize, setCustomSize] = React.useState({ width: 512, height: 512 });
   const [imageNumber, setImageNumber] = React.useState(1);
+  const [imageUploadShow, setImageUploadShow] = React.useState();
   const [imageUpload, setImageUpload] = React.useState();
+
+  const [loading, setLoading] = React.useState(false);
+  const [outputImage, setOutputImage] = React.useState(null);
+  const [outputImageFinal, setOutputImageFinal] = React.useState(null);
 
   const handleRenderModeChange = (event, newMode) => setRenderMode(newMode);
   const handleInputTypeChange = (event, newType) => setInputType(newType);
@@ -102,11 +124,11 @@ function Content() {
   };
 
   const handleBlur = () => {
-    // Ensures the value stays within the slider's range (512 to 2048)
+    // Ensures the value stays within the slider's range (512 to 1024)
     if (customSize.width < 512) {
       setCustomSize({ ...customSize, width: 512 });
-    } else if (customSize.width > 2048) {
-      setCustomSize({ ...customSize, width: 2048 });
+    } else if (customSize.width > 1024) {
+      setCustomSize({ ...customSize, width: 1024 });
     }
   };
 
@@ -120,9 +142,11 @@ function Content() {
     console.log(e.target.files);
     // setImageUpload(URL.createObjectURL(e.target.files[0]));
     setImageUpload(e.target.files[0]);
+    setImageUploadShow(URL.createObjectURL(e.target.files[0]));
   }
 
   const handleGenerate = async () => {
+    setLoading(true);
     // const payload = {
     //   // renderMode,
     //   // inputType,
@@ -137,30 +161,38 @@ function Content() {
 
     const data = new FormData();
     data.append("image", imageUpload);
-    console.log(imageUpload)
-    console.log(renderStyle)
-    console.log(frame)
-    console.log(customSize.width)
-    console.log(customSize.height)
+    // console.log(imageUpload)
+    // console.log(renderStyle)
+    // console.log(frame)
+    // console.log(customSize.width)
+    // console.log(customSize.height)
 
     try {
       const response = await fetch(`http://localhost:8080/render?style=${renderStyle}&material=${frame}&width=${customSize.width}&height=${customSize.height}`, {
         method: 'POST',
-        headers: {
-          // 'content-type': 'multipart/form-data',
-          // "Accept": "application/json",
-          "type": "formData"
-        },
+        // headers: {
+        //   // 'content-type': 'multipart/form-data',
+        //   // "Accept": "application/json",
+        //   "type": "formData"
+        // },
         body: data,
-        mode: 'no-cors'
       });
 
       const result = await response.json();
-      console.log('Server response:', result);
+
+      if (result.outputImage) {
+        setOutputImage(`http://localhost:8080/images/${result.outputImage}`);
+      }
     } catch (error) {
       console.error('Error sending data to backend:', error);
+    } finally {
+      setLoading(false); // Stop loading when the image is returned or if an error occurs
     }
   };
+
+  React.useEffect(() => {
+    setOutputImageFinal(outputImage)
+  }, [outputImage])
 
   const MAX = 100;
   const MIN = 0;
@@ -251,7 +283,7 @@ function Content() {
                       inputProps={{
                         step: 10,
                         min: 512,
-                        max: 2048,
+                        max: 1024,
                         type: 'number',
                       }}
                       size="small"
@@ -260,7 +292,7 @@ function Content() {
                       }}
                     />
                   </Grid>
-                  <Slider value={customSize.width} min={512} max={2048} onChange={handleWidthChange} size='small' />
+                  <Slider value={customSize.width} min={512} max={1024} onChange={handleWidthChange} size='small' />
                 </Grid>
                 <Grid item container xs={12} justifyContent='space-between' alignItems='center'>
                   <Grid item>
@@ -274,7 +306,7 @@ function Content() {
                       inputProps={{
                         step: 10,
                         min: 512,
-                        max: 2048,
+                        max: 1024,
                         type: 'number',
                       }}
                       size="small"
@@ -283,7 +315,7 @@ function Content() {
                       }}
                     />
                   </Grid>
-                  <Slider value={customSize.height} min={512} max={2048} onChange={handleHeightChange} size='small' />
+                  <Slider value={customSize.height} min={512} max={1024} onChange={handleHeightChange} size='small' />
                 </Grid>
               </Grid>
             </Grid>
@@ -300,9 +332,9 @@ function Content() {
             <Grid item xs={12} mt={1}>
               <Typography variant="h6" mt={1}>UPLOAD IMAGE</Typography>
               <Box onClick={handleBoxClick} height={150} display="flex" alignItems="center" justifyContent="center" sx={{ padding: '5px', border: '1px solid #BFADA4', borderRadius: '20px', backgroundColor: '#BFADA4', cursor: 'pointer' }}>
-                {imageUpload ? (
+                {imageUploadShow ? (
                   <img
-                    src={imageUpload}
+                    src={imageUploadShow}
                     alt="Uploaded Preview"
                     style={{ maxWidth: '100%', maxHeight: '100%' }}
                   />
@@ -384,7 +416,22 @@ function Content() {
 
             <Grid container mt={1}>
               <Box display="flex" alignItems="center" justifyContent="center" sx={{ border: '1px solid #BFADA4', borderRadius: '20px', backgroundColor: '#BFADA4', width: '100%', height: '600px' }}>
-                <ImageIcon sx={{ color: '#DDC7BB' }} />
+                {/* <ImageIcon sx={{ color: '#DDC7BB' }} /> */}
+                {/* <ImageCarousel images={images} /> */}
+                {loading ? (
+                  <CircularProgress />
+                ) :
+                  outputImageFinal ? (
+                    <img
+                      src={outputImageFinal}
+                      alt="Rendered Output"
+                      style={{ maxWidth: '100%', maxHeight: '100%' }} // Ensures the image fits well
+                    />
+                  ) : (
+                    <Typography variant="body1" color="text.secondary">No image generated yet.</Typography>
+                  )
+                }
+
               </Box>
             </Grid>
 

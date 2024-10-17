@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -16,6 +16,9 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import '../../styles/AppHeader.css'
+import { API_ROOT } from '~/utils/constants';
+
+import { toast } from 'react-toastify';
 // import AppTheme from './theme/AppTheme';
 // import ColorModeSelect from './theme/ColorModeSelect';
 
@@ -110,6 +113,8 @@ export default function SignIn(props) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -135,26 +140,33 @@ export default function SignIn(props) {
 
     try {
       // Send POST request to backend API
-      const response = await fetch('https://webhook.site/9d6dc48b-ca71-4ae2-9f05-f177292d224b', {
+      const response = await fetch(`${API_ROOT}/sign-in`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-        mode: 'no-cors'
       });
 
-      // // Handle the response
-      // if (response.ok) {
-      //   const result = await response.json();
-      //   console.log('Success:', result);
-      //   // Handle successful response here (e.g., save token, redirect)
-      // } else {
-      //   console.log('Error:', response.statusText);
-      //   // Handle error response here
-      // }
+      if (response.ok) {
+        const result = await response.json();
+        toast.success('Sign-in successful!');
+
+        // Save user data in localStorage (or use Context API for global state)
+        localStorage.setItem('user', JSON.stringify(result));
+
+        // Check if the user is admin
+        if (email === 'admin123@gmail.com') {
+          navigate('/admin/user'); // Redirect to admin page
+        } else {
+          navigate('/'); // Redirect to homepage for regular users
+        }
+      } else {
+        const errorData = await response.json();
+        toast.error("Sign-in Fail! "+ errorData.message);
+      }
     } catch (error) {
-      console.error('Request failed:', error);
+      toast.error('Request failed. Please try again later.');
       // Handle network errors or other unexpected issues
     }
   };
