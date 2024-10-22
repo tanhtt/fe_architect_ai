@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ImageIcon from '@mui/icons-material/Image';
 import FolderIcon from '@mui/icons-material/Folder';
 import ImageCarousel from '../ImageCarousel';
+import { API_ROOT } from '~/utils/constants';
 
 
 const images = [
@@ -168,7 +169,7 @@ function Content() {
     // console.log(customSize.height)
 
     try {
-      const response = await fetch(`http://localhost:8080/render?style=${renderStyle}&material=${frame}&width=${customSize.width}&height=${customSize.height}`, {
+      const response = await fetch(`${API_ROOT}/render?style=${renderStyle}&material=${frame}&width=${customSize.width}&height=${customSize.height}`, {
         method: 'POST',
         // headers: {
         //   // 'content-type': 'multipart/form-data',
@@ -181,7 +182,7 @@ function Content() {
       const result = await response.json();
 
       if (result.outputImage) {
-        setOutputImage(`http://localhost:8080/images/${result.outputImage}`);
+        setOutputImage(`${API_ROOT}/images/${result.outputImage}`);
       }
     } catch (error) {
       console.error('Error sending data to backend:', error);
