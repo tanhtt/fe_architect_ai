@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {
   AppBar, Toolbar, Typography, Container, Avatar, IconButton, Table, TableBody, TableCell, TableContainer, TableHead,
-  TableRow, Paper, TablePagination, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button,
-  Menu,
-  MenuItem
+  TableRow, Paper, TablePagination, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress, Tabs, Tab, Box, Grid,
+  Button, Menu, MenuItem, Divider
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { API_ROOT } from '~/utils/constants';
 
+// Tab panel component
+const TabPanel = ({ children, value, index, ...other }) => (
+  <div
+    role="tabpanel"
+    hidden={value !== index}
+    {...other}
+  >
+    {value === index && <Box p={3}>{children}</Box>}
+  </div>
+);
 
-// AdminUserPage component
 const AdminUserPage = () => {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,23 +26,25 @@ const AdminUserPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [selectedUser, setSelectedUser] = useState(null); // Selected user information
+  const [selectedUserDetails, setSelectedUserDetails] = useState(null); // Selected user details
+  const [userTransactions, setUserTransactions] = useState([]); // User transaction data
   const [open, setOpen] = useState(false); // Dialog open status
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false); // Loading state for dialog
+  const [tabValue, setTabValue] = useState(0); // Tab value to control which tab is active
+  const navigate = useNavigate();
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  // Handle menu close
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Remove user info from localStorage
-    setUser(null); // Update state to reflect user is logged out
-    navigate('/signin'); // Redirect to the sign-in page
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/signin');
   };
 
   const loadUserInfo = () => {
@@ -42,102 +52,95 @@ const AdminUserPage = () => {
     setUser(userInfo);
   };
 
-  // useEffect to load user information on mount and listen for storage changes
   useEffect(() => {
     loadUserInfo();
-
-    const handleStorageChange = () => {
-      loadUserInfo();
-    };
-
-    // Add event listener for localStorage changes
+    const handleStorageChange = () => loadUserInfo();
     window.addEventListener('storage', handleStorageChange);
-
-    // Cleanup function to remove event listener
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   useEffect(() => {
     fetchUsers(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
-  // Fetch user data from API
   const fetchUsers = async (page, limit) => {
     try {
       const response = await fetch(`${API_ROOT}/users`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
       const data = await response.json();
-      setTotalUsers(data.length); // Set total users from API data
-
-      // Paginate the data
+      setTotalUsers(data.length);
       const start = page * limit;
       const end = start + limit;
       setUsers(data.slice(start, end).map(user => ({
         id: user.id,
-        username: `${user.firstName.trim()} ${user.lastName.trim()}`, // Combine first and last name
+        username: `${user.firstName.trim()} ${user.lastName.trim()}`,
         email: user.email.trim(),
-        role: user.isActive ? 'User' : 'Inactive' // Assuming 'User' role for active users
+        role: user.isActive ? 'User' : 'Inactive'
       })));
     } catch (error) {
       console.error('Error fetching users:', error);
-      // Handle errors here, maybe set an error state
     }
   };
 
-  // Handle row click event
-  const handleRowClick = (user) => {
-    setSelectedUser(user); // Update selected user
-    setOpen(true); // Open dialog to show details
+  const handleRowClick = async (user) => {
+    setLoading(true);
+    setOpen(true);
+    try {
+      const [usageResponse, transactionResponse] = await Promise.all([
+        fetch(`${API_ROOT}/users/${user.id}/usages`),
+        fetch(`${API_ROOT}/users/${user.id}/transaction`)
+      ]);
+
+      if (!usageResponse.ok || !transactionResponse.ok) {
+        throw new Error('Failed to fetch user details or transactions');
+      }
+
+      const usageData = await usageResponse.json();
+      const transactionData = await transactionResponse.json();
+
+      setSelectedUserDetails(usageData);
+      setUserTransactions(transactionData);
+    } catch (error) {
+      console.error('Error fetching user details or transactions:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Close dialog
   const handleClose = () => {
     setOpen(false);
-    setSelectedUser(null); // Reset selected user
+    setSelectedUserDetails(null);
+    setUserTransactions([]);
+    setTabValue(0); // Reset to the first tab
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
+  const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleTabChange = (event, newValue) => setTabValue(newValue);
 
   return (
     <div>
       {/* Admin Header */}
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Admin Dashboard
-          </Typography>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>Admin Dashboard</Typography>
           <IconButton edge="end" color="inherit" onClick={handleAvatarClick}>
             <Avatar alt="Admin Profile" src="/path-to-admin-avatar.jpg" />
           </IconButton>
-          <Menu
-              anchorEl={anchorEl}
-              open={isMenuOpen}
-              onClose={handleMenuClose}
-            >
-              <MenuItem onClick={handleLogout}>
-                  Logout
-              </MenuItem>
-            </Menu>
+          <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
       {/* User Table */}
       <Container sx={{ marginTop: 4 }}>
-        <Paper>
+        <Paper elevation={2}>
           <TableContainer>
             <Table>
-              <TableHead>
+              <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Username</TableCell>
@@ -147,7 +150,7 @@ const AdminUserPage = () => {
               </TableHead>
               <TableBody>
                 {users.map((user, index) => (
-                  <TableRow key={user.id} onClick={() => handleRowClick(user)} style={{ cursor: 'pointer' }}>
+                  <TableRow key={user.id} onClick={() => handleRowClick(user)} hover style={{ cursor: 'pointer' }}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{user.username}</TableCell>
                     <TableCell>{user.email}</TableCell>
@@ -166,24 +169,107 @@ const AdminUserPage = () => {
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage="Số dòng mỗi trang"
+            labelRowsPerPage="Rows per page"
           />
         </Paper>
       </Container>
 
       {/* Dialog for displaying user details */}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Thông tin chi tiết người dùng</DialogTitle>
-        {selectedUser && (
-          <DialogContent>
-            <DialogContentText>ID: {selectedUser.id}</DialogContentText>
-            <DialogContentText>Username: {selectedUser.username}</DialogContentText>
-            <DialogContentText>Email: {selectedUser.email}</DialogContentText>
-            <DialogContentText>Role: {selectedUser.role}</DialogContentText>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <DialogTitle>
+          User Details
+        </DialogTitle>
+        {loading ? (
+          <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <CircularProgress />
           </DialogContent>
+        ) : (
+          <>
+            <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
+              <Tab label="User Details" />
+              <Tab label="Transactions" />
+            </Tabs>
+
+            <TabPanel value={tabValue} index={0}>
+              {selectedUserDetails && (
+                <DialogContent>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">User ID:</Typography>
+                      <Typography variant="body1">{selectedUserDetails.user.id}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Username:</Typography>
+                      <Typography variant="body1">{`${selectedUserDetails.user.firstName} ${selectedUserDetails.user.lastName}`}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Email:</Typography>
+                      <Typography variant="body1">{selectedUserDetails.user.email}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Phone:</Typography>
+                      <Typography variant="body1">{selectedUserDetails.user.telNo}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Start Time:</Typography>
+                      <Typography variant="body1">{new Date(selectedUserDetails.startTime).toLocaleString()}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">End Time:</Typography>
+                      <Typography variant="body1">
+                      {selectedUserDetails.endTime ? new Date(selectedUserDetails.endTime).toLocaleString() : 'Not yet'}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Subscriber:</Typography>
+                      <Typography variant="body1">{selectedUserDetails.subscriber ? 'Yes' : 'No'}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Generated Images:</Typography>
+                      <Typography variant="body1">{selectedUserDetails.noGeneratingImages}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="subtitle1" color="textSecondary">Exported Images:</Typography>
+                      <Typography variant="body1">{selectedUserDetails.noExportingImages}</Typography>
+                    </Grid>
+                  </Grid>
+                </DialogContent>
+              )}
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={1}>
+              {userTransactions.length > 0 ? (
+                <TableContainer component={Paper} elevation={0}>
+                  <Table>
+                    <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+                      <TableRow>
+                        <TableCell>Transaction ID</TableCell>
+                        <TableCell>Amount</TableCell>
+                        <TableCell>Subscription Type</TableCell>
+                        <TableCell>Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {userTransactions.map((transaction) => (
+                        <TableRow key={transaction.id}>
+                          <TableCell>{transaction.id}</TableCell>
+                          <TableCell>{transaction.amount}</TableCell>
+                          <TableCell>{transaction.subscriptionType}</TableCell>
+                          <TableCell>{transaction.status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              ) : (
+                <DialogContentText>No transactions found for this user.</DialogContentText>
+              )}
+            </TabPanel>
+          </>
         )}
+
         <DialogActions>
-          <Button onClick={handleClose} color="primary">Đóng</Button>
+          <Button onClick={handleClose} color="primary">Close</Button>
         </DialogActions>
       </Dialog>
     </div>
