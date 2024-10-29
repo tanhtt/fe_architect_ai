@@ -11,6 +11,7 @@ import AboutUs from './pages/Home/AboutUs/AboutUs';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import QRPayment from './pages/Payment/QRPayment';
 
 
 function AppContent() {
@@ -34,6 +35,8 @@ function AppContent() {
           <Route path="/signup" element={<SignUp />} /> {/* SignIn page route */}
           <Route path='/admin/user' element={<AdminUserPage/>} />
           <Route path='/aboutus' element={<AboutUs/>} />
+          <Route path='/payment' element={<QRPayment/>} />
+
         </Routes>
       </main>
 
