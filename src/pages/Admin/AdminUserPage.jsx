@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   AppBar, Toolbar, Typography, Container, Avatar, IconButton, Table, TableBody, TableCell, TableContainer, TableHead,
   TableRow, Paper, TablePagination, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress, Tabs, Tab, Box, Grid,
-  Button, Menu, MenuItem, Divider
+  Button, Menu, MenuItem, Divider, Select, FormControl, InputLabel
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { API_ROOT } from '~/utils/constants';
@@ -106,6 +106,30 @@ const AdminUserPage = () => {
     }
   };
 
+  const handleCreateTransaction = async (userId, subscriptionType) => {
+    try {
+      const response = await fetch(`${API_ROOT}/users/${userId}/transaction`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: 0,
+          subscriptionType,
+          status: 'SUCCESS',
+        }),
+      });
+      if (response.ok) {
+        alert('Transaction created successfully!');
+        setUserTransactions([...userTransactions, await response.json()]);
+      } else {
+        throw new Error('Failed to create transaction');
+      }
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+    }
+  };
+
   const handleClose = () => {
     setOpen(false);
     setSelectedUserDetails(null);
@@ -185,8 +209,8 @@ const AdminUserPage = () => {
           </DialogContent>
         ) : (
           <>
-            <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
-              <Tab label="User Details" />
+            <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="primary" textColor="primary" sx={{ paddingX: 4}}>
+              <Tab label="User Usages" />
               <Tab label="Transactions" />
             </Tabs>
 
@@ -235,6 +259,8 @@ const AdminUserPage = () => {
                   </Grid>
                 </DialogContent>
               )}
+
+              
             </TabPanel>
 
             <TabPanel value={tabValue} index={1}>
@@ -253,7 +279,7 @@ const AdminUserPage = () => {
                       {userTransactions.map((transaction) => (
                         <TableRow key={transaction.id}>
                           <TableCell>{transaction.id}</TableCell>
-                          <TableCell>{transaction.amount}</TableCell>
+                          <TableCell>${transaction.amount}</TableCell>
                           <TableCell>{transaction.subscriptionType}</TableCell>
                           <TableCell>{transaction.status}</TableCell>
                         </TableRow>
@@ -264,6 +290,31 @@ const AdminUserPage = () => {
               ) : (
                 <DialogContentText>No transactions found for this user.</DialogContentText>
               )}
+              {/* Button to create a transaction if none exist */}
+      {userTransactions.length === 0 && (
+        <Box sx={{ marginTop: 2 }}>
+          <FormControl fullWidth>
+            <InputLabel>Subscription Type</InputLabel>
+            <Select
+              onChange={(e) => handleCreateTransaction(selectedUserDetails.user.id, e.target.value)}
+              defaultValue=""
+            >
+              <MenuItem value="ONE_MONTH">One Month</MenuItem>
+              <MenuItem value="THREE_MONTHS">Three Months</MenuItem>
+              <MenuItem value="SIX_MONTHS">Six Months</MenuItem>
+              <MenuItem value="TWELVE_MONTHS">Twelve Months</MenuItem>
+            </Select>
+          </FormControl>
+          {/* <Button 
+            variant="contained" 
+            color="primary" 
+            sx={{ marginTop: 2 }}
+            onClick={() => handleCreateTransaction(selectedUserDetails.user.id, 'ONE_MONTH')}
+          >
+            Create Transaction
+          </Button> */}
+        </Box>
+      )}
             </TabPanel>
           </>
         )}

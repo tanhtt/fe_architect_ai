@@ -88,14 +88,14 @@ const Pricing = () => {
   const pricingOptions = [
     {
       title: "1 MONTH",
-      price: "$10/month",
+      price: "$10",
       amount: '253.530',
       duration: "1 month usage",
       features: ["1 month usage", "Inpaint module", "Upscale 3x", "Commercial use"],
     },
     {
       title: "3 MONTHS",
-      price: "$39/month",
+      price: "$25",
       amount: '633.825',
       duration: "3 month usage",
       features: ["3 month usage", "Inpaint module", "Upscale 3x", "Commercial use"],
@@ -103,7 +103,7 @@ const Pricing = () => {
     {
       title: "12 MONTHS",
       amount: '2.129.652',
-      price: "$25/month",
+      price: "$84",
       duration: "12 month usage",
       features: ["12 month usage", "Inpaint module", "Upscale 6x", "Commercial use"],
       bestDeal: true,
@@ -111,7 +111,7 @@ const Pricing = () => {
     {
       title: "6 MONTHS",
       amount: '1.216.944',
-      price: "$29/month",
+      price: "$48",
       duration: "6 month usage",
       features: ["6 month usage", "Inpaint module", "Upscale 4x", "Commercial use"],
       normalDeal: true,
